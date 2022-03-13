@@ -15,5 +15,6 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("Task with given id doesn't exist", HttpStatus.BAD_REQUEST);
 
 
+
     }
 }
