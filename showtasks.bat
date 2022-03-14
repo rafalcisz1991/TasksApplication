@@ -11,6 +11,10 @@ echo.
 echo Problems with opening browser
 goto fail
 
+:end
+echo.
+echo Browser opened successfully
+
 :fail
 echo.
 echo There were errors
