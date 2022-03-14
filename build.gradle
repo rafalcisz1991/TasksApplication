@@ -39,9 +39,9 @@ dependencies {
 
 }
 
-bootWar {
+/*bootWar {
 	archiveName 'crud.war'
-}
+}*/
 
 tasks.named('test') {
 	useJUnitPlatform()
