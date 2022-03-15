@@ -21,7 +21,9 @@ repositories {
 }
 
 jar {
-	enabled = false
+
+	baseName = 'tasks'
+	version = '0.0.1'
 }
 
 dependencies {
