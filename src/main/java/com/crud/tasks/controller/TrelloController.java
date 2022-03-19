@@ -23,7 +23,7 @@ public class TrelloController {
 
     private final TrelloClient trelloClient;
 
-    private boolean is
+    //private boolean is
 
     @GetMapping("boards")
     public void getTrelloBoards() throws NoSuchMethodException {
