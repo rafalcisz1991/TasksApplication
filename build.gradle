@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.10'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'war'
+	//id 'war'
 
 }
 
@@ -40,14 +40,14 @@ dependencies {
 	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
 
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
 }
 
 
-bootWar {
+/*bootWar {
 	archiveName 'crud.war'
-}
+}*/
 
 tasks.named('test') {
 	useJUnitPlatform()
