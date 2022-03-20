@@ -19,25 +19,21 @@ import java.util.stream.Collectors;
 @RequestMapping("v1/trello")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@SuppressWarnings("unchecked")
 public class TrelloController {
 
     private final TrelloClient trelloClient;
 
     @GetMapping("boards")
-    public List <TrelloBoardDto> getTrelloBoards() throws NoSuchMethodException {
+    public List <TrelloBoardDto> getTrelloBoards()  {
 
-        List <TrelloBoardDto> myTrelloBoards = new ArrayList<>();
+        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
 
-       try {
-           Method getBoard = TrelloClient.class.getDeclaredMethod("getTrelloBoards");
-           getBoard.setAccessible(true);
-           myTrelloBoards = (List<TrelloBoardDto>) getBoard.invoke(trelloClient);
-
-           List <TrelloBoardDto> filteredTrelloBoards =
-           myTrelloBoards.stream()
-                           .filter(l -> !l.getName().isEmpty() && !l.getId().isEmpty() && l.getName().contains("Kodilla"))
-                                   .collect(Collectors.toList());
+        List <TrelloBoardDto> filteredTrelloBoards =
+                trelloBoards.stream()
+                           .filter(l -> !l.getName().isEmpty())
+                           .filter(l -> !l.getId().isEmpty())
+                           .filter(l -> l.getName().contains("Kodilla"))
+                           .collect(Collectors.toList());
 
            filteredTrelloBoards.forEach(trelloBoardDto -> {
                    System.out.println("This board contains lists: ");
@@ -46,12 +42,9 @@ public class TrelloController {
                        System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
                    });
            });
+
+           return filteredTrelloBoards;
        }
-       catch (Exception e) {
-           System.out.println("Thrown exception: " + e);
-       }
-        return myTrelloBoards;
-    }
 
     @PostMapping("cards")
     public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
