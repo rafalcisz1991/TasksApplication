@@ -6,6 +6,7 @@ import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.trello.client.TrelloClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,25 +22,14 @@ public class TrelloController {
     private final TrelloClient trelloClient;
 
     @GetMapping("boards")
-    public List<TrelloBoardDto> getTrelloBoards() {
+    public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
 
-        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
+        return ResponseEntity.ok(trelloClient.getTrelloBoards());
+    }
 
-        List<TrelloBoardDto> filteredTrelloBoards =
-                trelloBoards.stream()
-                        .filter(l -> !l.getName().isEmpty())
-                        .filter(l -> !l.getId().isEmpty())
-                        .filter(l -> l.getName().contains("Kodilla"))
-                        .collect(Collectors.toList());
-
-        filteredTrelloBoards.forEach(trelloBoardDto -> {
-            System.out.println("This board contains lists: ");
-            System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName());
-            trelloBoardDto.getLists().forEach(trelloList -> {
-                System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
-            });
-        });
-        return filteredTrelloBoards;
+    @PostMapping("cards")
+    public ResponseEntity<CreatedTrelloCard> createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
+        return ResponseEntity.ok(trelloClient.createNewCard(trelloCardDto));
     }
 
     @GetMapping("batches")
@@ -53,10 +43,5 @@ public class TrelloController {
             System.out.println();
         });
         return trelloCards;
-    }
-
-    @PostMapping("cards")
-    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return trelloClient.createNewCard(trelloCardDto);
     }
 }
