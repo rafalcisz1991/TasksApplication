@@ -23,8 +23,6 @@ public class TrelloController {
 
     private final TrelloClient trelloClient;
 
-    //private boolean is
-
     @GetMapping("boards")
     public void getTrelloBoards() throws NoSuchMethodException {
        try {
@@ -32,19 +30,18 @@ public class TrelloController {
            getBoard.setAccessible(true);
            List<TrelloBoardDto> myTrelloBoards = (List<TrelloBoardDto>) getBoard.invoke(trelloClient);
 
-           //getBoard.invoke(trelloClient);
-           //List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
-
            //do zadania 22.2 - podpunkt 3
-          /* TrelloBoardDto myTrelloBoardDto = new TrelloBoardDto();
 
-           Field[] fieldsList = myTrelloBoardDto.getClass().getDeclaredFields();
-           for (TrelloBoardDto trelloBoardDto : myTrelloBoards) {
-               if (trelloBoardDto.get)
+          /*for (TrelloBoardDto trelloBoardDto : myTrelloBoards) {
+               if (!trelloBoardDto.getId().isEmpty() && !trelloBoardDto.getName().isEmpty() &&
+                       trelloBoardDto.getName().contains("Kodilla")) {
+                   System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName());
+               }
            }*/
 
-
            myTrelloBoards.forEach(trelloBoardDto -> {
+               if (!trelloBoardDto.getId().isEmpty() && !trelloBoardDto.getName().isEmpty() &&
+                       trelloBoardDto.getName().contains("Kodilla"))
                System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName());
            });
        } catch (Exception e) {
