@@ -1,18 +1,19 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
+import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.trello.client.TrelloClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("v1/trello")
@@ -24,27 +25,36 @@ public class TrelloController {
     private final TrelloClient trelloClient;
 
     @GetMapping("boards")
-    public void getTrelloBoards() throws NoSuchMethodException {
+    public List <TrelloBoardDto> getTrelloBoards() throws NoSuchMethodException {
+
+        List <TrelloBoardDto> myTrelloBoards = new ArrayList<>();
+
        try {
            Method getBoard = TrelloClient.class.getDeclaredMethod("getTrelloBoards");
            getBoard.setAccessible(true);
-           List<TrelloBoardDto> myTrelloBoards = (List<TrelloBoardDto>) getBoard.invoke(trelloClient);
+           myTrelloBoards = (List<TrelloBoardDto>) getBoard.invoke(trelloClient);
 
-           //do zadania 22.2 - podpunkt 3
-          /*for (TrelloBoardDto trelloBoardDto : myTrelloBoards) {
-               if (!trelloBoardDto.getId().isEmpty() && !trelloBoardDto.getName().isEmpty() &&
-                       trelloBoardDto.getName().contains("Kodilla")) {
+           List <TrelloBoardDto> filteredTrelloBoards =
+           myTrelloBoards.stream()
+                           .filter(l -> !l.getName().isEmpty() && !l.getId().isEmpty() && l.getName().contains("Kodilla"))
+                                   .collect(Collectors.toList());
+
+           filteredTrelloBoards.forEach(trelloBoardDto -> {
+                   System.out.println("This board contains lists: ");
                    System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName());
-               }
-           }*/
-
-           myTrelloBoards.forEach(trelloBoardDto -> {
-               if (!trelloBoardDto.getId().isEmpty() && !trelloBoardDto.getName().isEmpty() &&
-                       trelloBoardDto.getName().contains("Kodilla"))
-               System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName());
+                   trelloBoardDto.getLists().forEach(trelloList -> {
+                       System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
+                   });
            });
-       } catch (Exception e) {
+       }
+       catch (Exception e) {
            System.out.println("Thrown exception: " + e);
        }
+        return myTrelloBoards;
+    }
+
+    @PostMapping("cards")
+    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
+        return trelloClient.createNewCard(trelloCardDto);
     }
 }
