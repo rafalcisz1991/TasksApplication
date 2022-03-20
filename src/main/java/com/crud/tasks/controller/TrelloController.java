@@ -31,7 +31,6 @@ public class TrelloController {
            List<TrelloBoardDto> myTrelloBoards = (List<TrelloBoardDto>) getBoard.invoke(trelloClient);
 
            //do zadania 22.2 - podpunkt 3
-
           /*for (TrelloBoardDto trelloBoardDto : myTrelloBoards) {
                if (!trelloBoardDto.getId().isEmpty() && !trelloBoardDto.getName().isEmpty() &&
                        trelloBoardDto.getName().contains("Kodilla")) {
