@@ -2,6 +2,7 @@ package com.crud.tasks.trello.client;
 
 
 import com.crud.tasks.domain.CreatedTrelloCard;
+import com.crud.tasks.domain.NewTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class TrelloClient {
     private String trelloToken;
     @Value("${trello.app.username}")
     private String trelloUserName;
+    @Value("${trello.app.idBoard}")
+    private String trelloBoardId;
 
     private URI trelloBoardURL () {
         return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloUserName + "/boards")
@@ -64,5 +67,20 @@ public class TrelloClient {
                 .toUri();
 
         return restTemplate.postForObject(url, null, CreatedTrelloCard.class);
+    }
+
+    public List<NewTrelloCardDto> getTrelloCardsWithMoreFields() {
+        URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/boards/" + trelloBoardId + "/cards")
+                .queryParam("key", trelloAppKey)
+                .queryParam("token", trelloToken)
+                .queryParam("fields", "badges")
+                .build()
+                .encode()
+                .toUri();
+        NewTrelloCardDto[] cardsResponse = restTemplate.getForObject(url, NewTrelloCardDto[].class);
+
+        return Optional.ofNullable(cardsResponse)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
     }
 }
