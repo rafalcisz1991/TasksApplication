@@ -105,5 +105,6 @@ class TrelloClientTest {
 
         //Then
         assertTrue(emptyTrelloBoards.isEmpty());
+
     }
 }
