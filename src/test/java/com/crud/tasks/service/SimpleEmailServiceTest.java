@@ -8,6 +8,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import javax.validation.constraints.AssertTrue;
+
+import java.util.Optional;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -26,17 +31,12 @@ class SimpleEmailServiceTest {
     @Test
     public void shouldSendEmail() {
         //Given
-        Mail mail = new Mail("test@test.com", "Test", "Test Message", "test1@test.com");
-
-        /* Przykład wykorzystania builder'a z podpunktu 4 zadania 23.3
-        Mail.builder()
+        Mail mail = Mail.builder()
                 .mailTo("test@test.com")
                 .subject("Test")
                 .message("Test message")
                 .toCc("test1@test.com")
                 .build();
-         */
-
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
@@ -49,7 +49,7 @@ class SimpleEmailServiceTest {
 
         //Then
         verify(javaMailSender, times(1)).send(mailMessage);
+        //assertTrue(mail.getToCc().isPresent());
 
     }
-
 }
