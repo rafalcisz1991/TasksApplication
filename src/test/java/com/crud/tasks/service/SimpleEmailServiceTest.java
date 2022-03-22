@@ -9,15 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import javax.validation.constraints.AssertTrue;
-
-import java.util.Optional;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @ExtendWith(MockitoExtension.class)
 class SimpleEmailServiceTest {
