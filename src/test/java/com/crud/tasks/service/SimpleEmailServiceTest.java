@@ -28,7 +28,7 @@ class SimpleEmailServiceTest {
         //Given
         Mail mail = new Mail("test@test.com", "Test", "Test Message", "test1@test.com");
 
-        /* Przykład wykorzystania builder'a z podpunktu 4 zadania
+        /* Przykład wykorzystania builder'a z podpunktu 4 zadania 23.3
         Mail.builder()
                 .mailTo("test@test.com")
                 .subject("Test")
