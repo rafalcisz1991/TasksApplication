@@ -28,6 +28,16 @@ class SimpleEmailServiceTest {
         //Given
         Mail mail = new Mail("test@test.com", "Test", "Test Message", "test1@test.com");
 
+        /* Przykład wykorzystania builder'a z podpunktu 4 zadania
+        Mail.builder()
+                .mailTo("test@test.com")
+                .subject("Test")
+                .message("Test message")
+                .toCc("test1@test.com")
+                .build();
+         */
+
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
