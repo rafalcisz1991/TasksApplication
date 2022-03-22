@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("v1/trello")
 @RequiredArgsConstructor
@@ -23,7 +21,6 @@ public class TrelloController {
 
     @GetMapping("boards")
     public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
-
         return ResponseEntity.ok(trelloClient.getTrelloBoards());
     }
 
