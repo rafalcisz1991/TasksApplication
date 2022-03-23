@@ -15,7 +15,7 @@ public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void send(final Mail mail) throws NullPointerException{
+    public void send(final Mail mail) throws NullPointerException {
         log.info("Starting email preparation...");
         try {
             SimpleMailMessage mailMessage = createMailMessage(mail);
@@ -27,20 +27,22 @@ public class SimpleEmailService {
     }
 
 
-    private SimpleMailMessage createMailMessage(final Mail mail) {
+    private SimpleMailMessage createMailMessage (final Mail mail) throws NullPointerException{
         log.info("New start of sending new e-mail");
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
             mailMessage.setTo(mail.getMailTo());
             mailMessage.setSubject(mail.getSubject());
             mailMessage.setText(mail.getMessage());
-            mailMessage.setCc(mail.getToCc());
+            //mailMessage.setCc(mail.getToCc());
 
        /* Optional<String> opt = Optional.of(mail.getToCc());
         mail.getToCc() = String.valueOf(Optional.ofNullable(mail.getToCc()).isPresent());*/
         try {
             if (!mail.getToCc().isEmpty()) {
                 mailMessage.setCc(mail.getToCc());
+            } else {
+                return null;
             }
             log.info("New e-mail sent correctly");
 
