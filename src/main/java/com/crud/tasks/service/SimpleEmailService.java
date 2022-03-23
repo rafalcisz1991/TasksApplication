@@ -21,23 +21,34 @@ public class SimpleEmailService {
             SimpleMailMessage mailMessage = createMailMessage(mail);
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
-        } catch (MailException e) {
+        } catch ( NullPointerException e) {
             log.error("Failed to process email sending: " + e.getMessage(), e);
         }
     }
 
+
     private SimpleMailMessage createMailMessage(final Mail mail) {
+        log.info("New start of sending new e-mail");
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
+
+            mailMessage.setTo(mail.getMailTo());
+            mailMessage.setSubject(mail.getSubject());
+            mailMessage.setText(mail.getMessage());
+            mailMessage.setCc(mail.getToCc());
 
        /* Optional<String> opt = Optional.of(mail.getToCc());
         mail.getToCc() = String.valueOf(Optional.ofNullable(mail.getToCc()).isPresent());*/
+        try {
+            if (!mail.getToCc().isEmpty()) {
+                mailMessage.setCc(mail.getToCc());
+            }
+            log.info("New e-mail sent correctly");
 
-        if (!mail.getToCc().isEmpty()){
-            mailMessage.setCc(mail.getToCc());
+        } catch (NullPointerException e) {
+            log.error("Another fail of e-mail send attempt:" + e.getMessage(), e);
         }
+
         return mailMessage;
+        }
     }
-}
+
