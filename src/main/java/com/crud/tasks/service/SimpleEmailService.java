@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -15,42 +17,26 @@ public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void send(final Mail mail) throws NullPointerException {
+    public void send(final Mail mail) {
         log.info("Starting email preparation...");
         try {
             SimpleMailMessage mailMessage = createMailMessage(mail);
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
-        } catch ( NullPointerException e) {
+        } catch (MailException e) {
             log.error("Failed to process email sending: " + e.getMessage(), e);
         }
     }
 
-
-    private SimpleMailMessage createMailMessage (final Mail mail) throws NullPointerException{
-        log.info("New start of sending new e-mail");
+    private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getMailTo());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getMessage());
 
-            mailMessage.setTo(mail.getMailTo());
-            mailMessage.setSubject(mail.getSubject());
-            mailMessage.setText(mail.getMessage());
-            //mailMessage.setCc(mail.getToCc());
-
-       /* Optional<String> opt = Optional.of(mail.getToCc());
-        mail.getToCc() = String.valueOf(Optional.ofNullable(mail.getToCc()).isPresent());*/
-        try {
-            if (!mail.getToCc().isEmpty()) {
-                mailMessage.setCc(mail.getToCc());
-            } else {
-                return null;
-            }
-            log.info("New e-mail sent correctly");
-
-        } catch (NullPointerException e) {
-            log.error("Another fail of e-mail send attempt:" + e.getMessage(), e);
-        }
-
+        Optional.ofNullable(mail.getToCc())
+                        .ifPresent(mailMessage::setCc);
         return mailMessage;
-        }
     }
+}
 
