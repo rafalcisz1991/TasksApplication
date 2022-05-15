@@ -51,8 +51,10 @@ class TrelloMapperTest {
         List<TrelloBoardDto> trelloBoardDtos = trelloFacade.fetchTrelloBoards();
 
         //Then
-        assertNotNull(trelloBoardDtos);
-        assertEquals(0, trelloBoardDtos.size());
+        assertTrue(trelloBoardDtos.isEmpty());
+        assertFalse(mappedTrelloBoards.isEmpty());
+        assertFalse(trelloLists.isEmpty());
+
     }
     @Test
     public void shouldFetchTrelloBoards() {

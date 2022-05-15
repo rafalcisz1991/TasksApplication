@@ -1,8 +1,6 @@
 package com.crud.tasks.trello.client;
 
-import com.crud.tasks.domain.CreatedTrelloCardDto;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloCardDto;
+import com.crud.tasks.domain.*;
 import com.crud.tasks.trello.config.TrelloConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +22,8 @@ class TrelloClientTest {
 
     @InjectMocks
     private TrelloClient trelloClient;
-
     @Mock
     private RestTemplate restTemplate;
-
     @Mock
     private TrelloConfig trelloConfig;
 
@@ -107,4 +103,35 @@ class TrelloClientTest {
         assertTrue(emptyTrelloBoards.isEmpty());
 
     }
+    @Test
+    public void testGetCardsWithMoreFields() throws URISyntaxException{
+        //Given
+        when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
+        when(trelloConfig.getTrelloAppKey()).thenReturn("test");
+        when(trelloConfig.getTrelloToken()).thenReturn("test");
+        when(trelloConfig.getTrelloBoardId()).thenReturn("test");
+
+        NewTrelloCardDto[] trelloCards = new NewTrelloCardDto[1];
+        trelloCards[0] = new NewTrelloCardDto("1", new TrelloBadgesDto(1,
+                new AttachmentsByType(new Trello(1, 2))));
+
+        URI uri = new URI("http://test.com/boards/test/cards?key=test&token=test&fields=badges");
+
+        when(restTemplate.getForObject(uri, NewTrelloCardDto[].class)).thenReturn(trelloCards);
+        //When
+        List<NewTrelloCardDto> fetchedCardsWithBadges = trelloClient.getTrelloCardsWithMoreFields();
+
+        //Then
+        assertFalse(fetchedCardsWithBadges.isEmpty());
+        assertEquals(1, fetchedCardsWithBadges.size());
+        assertEquals("1", fetchedCardsWithBadges.get(0).getCardId());
+        assertEquals(1, fetchedCardsWithBadges.get(0).getBadges().getVotes());
+        assertEquals(1, fetchedCardsWithBadges.get(0).getBadges().getAttachments().getTrello().getBoard());
+        assertEquals(2, fetchedCardsWithBadges.get(0).getBadges().getAttachments().getTrello().getCard());
+
+
+
+    }
+
+
 }
