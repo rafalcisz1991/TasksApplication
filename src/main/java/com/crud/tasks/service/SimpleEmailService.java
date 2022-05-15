@@ -1,6 +1,7 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
+    private TaskRepository taskRepository;
 
     public void send(final Mail mail) {
         log.info("Starting email preparation...");
@@ -23,6 +25,7 @@ public class SimpleEmailService {
             SimpleMailMessage mailMessage = createMailMessage(mail);
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
+
         } catch (MailException e) {
             log.error("Failed to process email sending: " + e.getMessage(), e);
         }
@@ -33,6 +36,8 @@ public class SimpleEmailService {
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
+
+
 
         Optional.ofNullable(mail.getToCc())
                         .ifPresent(mailMessage::setCc);
