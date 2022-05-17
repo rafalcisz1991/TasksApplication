@@ -17,8 +17,8 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class TrelloClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrelloClient.class);
