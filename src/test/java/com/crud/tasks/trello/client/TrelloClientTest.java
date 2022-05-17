@@ -128,10 +128,5 @@ class TrelloClientTest {
         assertEquals(1, fetchedCardsWithBadges.get(0).getBadges().getVotes());
         assertEquals(1, fetchedCardsWithBadges.get(0).getBadges().getAttachments().getTrello().getBoard());
         assertEquals(2, fetchedCardsWithBadges.get(0).getBadges().getAttachments().getTrello().getCard());
-
-
-
     }
-
-
 }
