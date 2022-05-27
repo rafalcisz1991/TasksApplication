@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class TrelloMapperTest {
 
+
     @Autowired
     private TrelloMapper trelloMapper;
 
