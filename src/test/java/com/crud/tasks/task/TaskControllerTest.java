@@ -16,15 +16,10 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringJUnitWebConfig
 @WebMvcTest(TaskController.class)
@@ -36,7 +31,6 @@ class TaskControllerTest {
     @MockBean
     TaskMapper taskMapper;
 
-    //dlaczego potrzebne jest tworzenie osobnego @MockBean dla DbService oraz TaskMapper
     @MockBean
     DbService dbService;
 
@@ -86,14 +80,13 @@ class TaskControllerTest {
     @Test
     public void shouldCreateNewTask() throws Exception {
         //Given
-        Task task = new Task(1L, "Test task", "Test description");
         TaskDto taskDto = new TaskDto(1L, "Test Dto Task", "Test DTO description");
+        Task task = new Task(1L, "Test task", "Test description");
 
+        when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
+        when(dbService.saveTask(task)).thenReturn(task);
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
-
-        when(dbService.saveTask(task)).thenReturn(task);
-        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
 
         //When & Then
         mockMvc
@@ -102,8 +95,9 @@ class TaskControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
-                //wyskakuje błąd:
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)));
-
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Test task")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Test description")));
     }
 }
