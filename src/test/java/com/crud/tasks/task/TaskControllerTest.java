@@ -94,7 +94,7 @@ class TaskControllerTest {
         //When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/v1/tasks/newTask")
+                        .post("/v1/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
@@ -104,4 +104,5 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content",
                         Matchers.is("Test DTO description")));
     }
+
 }
