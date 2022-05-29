@@ -88,7 +88,6 @@ class TaskControllerTest {
         when(taskMapper.mapToTask(taskDto)).thenReturn(task);
         when(dbService.saveTask(task)).thenReturn(task);
 
-
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
 

@@ -46,7 +46,7 @@ public class TaskController {
     @PostMapping(value = "/newTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
-        Task savedTask = service.saveTask(task);
+        service.saveTask(task);
         return ResponseEntity.ok(taskDto);
     }
 }
