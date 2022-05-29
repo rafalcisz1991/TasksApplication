@@ -66,6 +66,7 @@ class TrelloFacadeTest {
         trelloLists.add(new TrelloListDto("1", "my_list", false));
         List<TrelloBoardDto> trelloBoards = new ArrayList<>();
         trelloBoards.add(new TrelloBoardDto("1", "my_task", trelloLists));
+
         List<TrelloList> mappedTrelloLists = new ArrayList<>();
         mappedTrelloLists.add(new TrelloList("1", "my_list", false));
         List<TrelloBoard> mappedTrelloBoards = new ArrayList<>();
@@ -81,18 +82,16 @@ class TrelloFacadeTest {
 
         //Then
         assertNotNull(trelloBoardDtos);
+        assertFalse(trelloBoardDtos.isEmpty());
         assertEquals(1, trelloBoardDtos.size());
-
-        trelloBoardDtos.forEach(trelloBoardDto -> {
-            assertEquals("1", trelloBoardDto.getId());
-            assertEquals("my_task", trelloBoardDto.getName());
-
-            trelloBoardDto.getLists().forEach(trelloListDto -> {
-                assertEquals("1", trelloListDto.getId());
-                assertEquals("my_list", trelloListDto.getName());
-                assertFalse(trelloListDto.isClosed());
-            });
-        });
+        assertEquals("1", trelloBoardDtos.get(0).getId());
+        assertEquals("my_task", trelloBoardDtos.get(0).getName());
+        assertNotNull(trelloBoardDtos.get(0).getLists());
+        assertFalse(trelloBoardDtos.get(0).getLists().isEmpty());
+        assertEquals(1, trelloBoardDtos.get(0).getLists().size());
+        assertEquals("my_list", trelloBoardDtos.get(0).getLists().get(0).getName());
+        assertEquals("1", trelloBoardDtos.get(0).getLists().get(0).getId());
+        assertFalse(trelloBoardDtos.get(0).getLists().get(0).isClosed());
     }
 
     @Test
@@ -100,12 +99,17 @@ class TrelloFacadeTest {
         //Given
         TrelloCardDto trelloCardDto = new TrelloCardDto(
                 "card1", "testCard", "pos1", "list1");
+
         CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto(
                 "1", "card1", "http://Test.com");
-        when(trelloService.createTrelloCard(trelloCardDto)).thenReturn(createdTrelloCardDto);
+
+        TrelloCard trelloCard = new TrelloCard("name1", "desc1", "pos1", "1");
+
+        when(trelloService.createTrelloCard(null)).thenReturn(createdTrelloCardDto);
+        when(trelloMapper.mapToCard(trelloCardDto)).thenReturn(trelloCard);
 
         //When
-        CreatedTrelloCardDto newCard = trelloService.createTrelloCard(trelloCardDto);
+        CreatedTrelloCardDto newCard = trelloFacade.createCard(trelloCardDto);
 
         //Then
         assertNotNull(newCard);
