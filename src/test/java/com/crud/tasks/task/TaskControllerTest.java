@@ -8,6 +8,8 @@ import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,10 +31,10 @@ class TaskControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    TaskMapper taskMapper;
+    private TaskMapper taskMapper;
 
     @MockBean
-    DbService dbService;
+    private DbService dbService;
 
     @Test
     void shouldGetTasks() throws Exception {
@@ -83,21 +85,23 @@ class TaskControllerTest {
         TaskDto taskDto = new TaskDto(1L, "Test Dto Task", "Test DTO description");
         Task task = new Task(1L, "Test task", "Test description");
 
-        when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
         when(dbService.saveTask(task)).thenReturn(task);
+
+
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
 
         //When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/v1/tasks")
+                        .post("/v1/tasks/newTask")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Test task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Test description")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Test Dto Task")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Test DTO description")));
     }
 }
