@@ -101,6 +101,7 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Test Dto Task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Test DTO description")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content",
+                        Matchers.is("Test DTO description")));
     }
 }
