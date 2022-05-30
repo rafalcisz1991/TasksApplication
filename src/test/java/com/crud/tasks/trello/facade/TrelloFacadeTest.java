@@ -84,14 +84,17 @@ class TrelloFacadeTest {
         assertNotNull(trelloBoardDtos);
         assertFalse(trelloBoardDtos.isEmpty());
         assertEquals(1, trelloBoardDtos.size());
-        assertEquals("1", trelloBoardDtos.get(0).getId());
-        assertEquals("my_task", trelloBoardDtos.get(0).getName());
-        assertNotNull(trelloBoardDtos.get(0).getLists());
-        assertFalse(trelloBoardDtos.get(0).getLists().isEmpty());
-        assertEquals(1, trelloBoardDtos.get(0).getLists().size());
-        assertEquals("my_list", trelloBoardDtos.get(0).getLists().get(0).getName());
-        assertEquals("1", trelloBoardDtos.get(0).getLists().get(0).getId());
-        assertFalse(trelloBoardDtos.get(0).getLists().get(0).isClosed());
+
+        TrelloBoardDto trelloBoardDto = trelloBoardDtos.get(0);
+
+        assertEquals("1", trelloBoardDto.getId());
+        assertEquals("my_task", trelloBoardDto.getName());
+        assertNotNull(trelloBoardDto.getLists());
+        assertFalse(trelloBoardDto.getLists().isEmpty());
+        assertEquals(1, trelloBoardDto.getLists().size());
+        assertEquals("my_list", trelloBoardDto.getLists().get(0).getName());
+        assertEquals("1", trelloBoardDto.getLists().get(0).getId());
+        assertFalse(trelloBoardDto.getLists().get(0).isClosed());
     }
 
     @Test
