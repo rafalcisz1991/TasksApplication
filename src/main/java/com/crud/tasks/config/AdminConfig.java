@@ -1,3 +1,4 @@
+/*
 package com.crud.tasks.config;
 
 
@@ -12,3 +13,4 @@ public class AdminConfig {
     @Value("${admin.mail}")
     private String adminMail;
 }
+*/

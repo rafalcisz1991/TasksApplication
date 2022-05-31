@@ -1,7 +1,7 @@
 package com.crud.tasks.service;
 
 
-import com.crud.tasks.config.AdminConfig;
+//import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.domain.TrelloBoardDto;
@@ -19,8 +19,8 @@ import static java.util.Optional.ofNullable;
 public class TrelloService {
     private static final String SUBJECT = "Tasks: New Trello card";
     private final TrelloClient trelloClient;
-    private final SimpleEmailService emailService;
-    private final AdminConfig adminConfig;
+    // final SimpleEmailService emailService;
+    //private final AdminConfig adminConfig;
 
     public List<TrelloBoardDto> fetchTrelloBoards() {
         return trelloClient.getTrelloBoards();
@@ -28,13 +28,13 @@ public class TrelloService {
 
     public CreatedTrelloCardDto createTrelloCard(final TrelloCardDto trelloCardDto) {
         CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
-        ofNullable(newCard).ifPresent(card -> emailService.send(
+        /*ofNullable(newCard).ifPresent(card -> emailService.send(
                 new Mail(
                         adminConfig.getAdminMail(),
                         SUBJECT,
                         "New card: " + trelloCardDto.getName() + " has been created on your Trello account",
                         null
-                )));
+                )));*/
         return newCard;
     }
 }
