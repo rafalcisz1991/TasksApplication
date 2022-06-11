@@ -37,7 +37,8 @@ dependencies {
 
 	runtimeOnly 'mysql:mysql-connector-java'
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
-	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.4.0'
+
 
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -49,7 +50,6 @@ dependencies {
 	testImplementation 'com.google.code.gson:gson'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
-
 
 /*bootWar {
 	archiveName 'crud.war'
