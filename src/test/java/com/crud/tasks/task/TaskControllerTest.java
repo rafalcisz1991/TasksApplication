@@ -84,7 +84,7 @@ class TaskControllerTest {
         TaskDto taskDto = new TaskDto(1L, "Test Dto Task", "Test DTO description");
         Task task = new Task(1L, "Test task", "Test description");
 
-        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
         when(dbService.saveTask(task)).thenReturn(task);
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 

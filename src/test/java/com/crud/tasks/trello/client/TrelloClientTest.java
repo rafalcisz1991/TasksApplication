@@ -46,8 +46,8 @@ class TrelloClientTest {
 
         // Then
         assertEquals(1, fetchedTrelloBoards.size());
-        assertEquals("test_id", fetchedTrelloBoards.get(0).getId());
-        assertEquals("Kodilla", fetchedTrelloBoards.get(0).getName());
+        assertEquals("Kodilla", fetchedTrelloBoards.get(0).getId());
+        assertEquals("test_id", fetchedTrelloBoards.get(0).getName());
         assertEquals(new ArrayList<>(), fetchedTrelloBoards.get(0).getLists());
 
     }
