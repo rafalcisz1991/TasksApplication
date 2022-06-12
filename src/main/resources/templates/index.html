@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My welcome page</title>
+</head>
+<body>
+
+<h1>First impression of my page</h1>
+
+<!--/*thymesVar id="variable" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${variable}"></span>
+
+<br>
+
+<!--/*thymesVar id="one" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="two" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${one} + ${two}"></span>
+
+<br>
+
+<!--/*thymesVar id="two" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="multi" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="equals" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${two} + ${multi} + ${two} + ${equals} + ${two} * ${two}"></span>
+
+<br>
+
+<!--/*thymesVar id="two" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="multi" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="equals" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="add" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${two} + ${multi} + ${two} + ${add} + ${two} + ${equals} + ((${two} * ${two}) + ${two})"></span>
+
+<br>
+
+<!--/*thymesVar id="two" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="equals" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="subtract" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<!--/*thymesVar id="multi" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${two} + ${subtract} + ${two} + ${multi} + ${two} + ${equals} + (${two} - (${two} * ${two}))"></span>
+
+</body>
+</html>
