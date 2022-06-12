@@ -1,4 +1,4 @@
-/*
+
 package com.crud.tasks.scheduler;
 
 import com.crud.tasks.config.AdminConfig;
@@ -37,4 +37,4 @@ public class EmailScheduler {
         );
     }
 }
-*/
+
