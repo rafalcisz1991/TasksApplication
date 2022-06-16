@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 
 @Component
 @RequiredArgsConstructor
@@ -20,12 +22,13 @@ public class EmailScheduler {
     private final TaskRepository taskRepository;
     private final AdminConfig adminConfig;
 
-    @Scheduled(fixedDelay = 1000000)
+    @Scheduled(cron = "@daily" )
+    //@Scheduled(fixedDelay = 1000000)
     public void sendInformationEmail() {
         long size = taskRepository.count();
-        String numeral = "tasks";
+        String numeral = " tasks";
         if (size == 1) {
-            numeral = "task";
+            numeral = " task";
         }
         simpleEmailService.send(
                 new Mail(
